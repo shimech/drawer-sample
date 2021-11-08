@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Button } from "@mui/material";
 import { css } from "@emotion/react";
-import { Transition } from "react-transition-group";
+import { Transition, TransitionStatus } from "react-transition-group";
 
 type DrawerProps = {
   className?: string;
   duration: number;
   mount: boolean;
-  standby: boolean;
+  state: TransitionStatus;
   width: number;
   onClose?: VoidFunction;
 };
@@ -39,7 +39,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
               position: fixed;
               transition: opacity ${props.duration}ms;
             `,
-            props.standby &&
+            (props.state === "exiting" || props.state === "exited") &&
               css`
                 opacity: 0;
               `,
@@ -57,7 +57,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
               transition: transform ${props.duration}ms;
               width: ${props.width}px;
             `,
-            props.standby &&
+            (props.state === "exiting" || props.state === "exited") &&
               css`
                 transform: translateX(-${props.width}px);
               `,
@@ -74,14 +74,12 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
   }
 };
 
-const DURATION = 3000;
+const DURATION = 1000;
 
 const ReactTransitionGroup: React.FunctionComponent = () => {
   const [mount, setMount] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [standby, setStandby] = React.useState(true);
 
-  const handleEntering = () => setStandby(false);
   const handleExited = () => setMount(false);
 
   return (
@@ -94,22 +92,14 @@ const ReactTransitionGroup: React.FunctionComponent = () => {
       >
         OPEN
       </Button>
-      <Transition
-        in={open}
-        timeout={DURATION}
-        onEntering={handleEntering}
-        onExited={handleExited}
-      >
-        {() => (
+      <Transition in={open} timeout={DURATION} onExited={handleExited}>
+        {(state) => (
           <Drawer
             duration={DURATION}
             mount={mount}
-            standby={standby}
+            state={state}
             width={200}
-            onClose={() => {
-              setOpen(false);
-              setStandby(true);
-            }}
+            onClose={() => setOpen(false)}
           >
             Drawer
           </Drawer>
