@@ -5,10 +5,10 @@ import { css } from "@emotion/react";
 import { Transition } from "react-transition-group";
 
 type DrawerProps = {
-  beforeEnter: boolean;
   className?: string;
   duration: number;
-  open: boolean;
+  mount: boolean;
+  standby: boolean;
   width: number;
   onClose?: VoidFunction;
 };
@@ -20,7 +20,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
     setBody(document.body);
   }, []);
 
-  if (body && props.open) {
+  if (body && props.mount) {
     return ReactDOM.createPortal(
       <div
         className={props.className}
@@ -39,7 +39,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
               position: fixed;
               transition: opacity ${props.duration}ms;
             `,
-            props.beforeEnter &&
+            props.standby &&
               css`
                 opacity: 0;
               `,
@@ -57,7 +57,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
               transition: transform ${props.duration}ms;
               width: ${props.width}px;
             `,
-            props.beforeEnter &&
+            props.standby &&
               css`
                 transform: translateX(-${props.width}px);
               `,
@@ -77,24 +77,38 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
 const DURATION = 3000;
 
 const ReactTransitionGroup: React.FunctionComponent = () => {
+  const [mount, setMount] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [beforeEnter, setBeforeEnter] = React.useState(true);
+  const [standby, setStandby] = React.useState(true);
 
-  const handleEntering = () => setBeforeEnter(false);
+  const handleEntering = () => setStandby(false);
+  const handleExited = () => setMount(false);
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>OPEN</Button>
-      <Transition in={open} timeout={DURATION} onEntering={handleEntering}>
+      <Button
+        onClick={() => {
+          setMount(true);
+          setOpen(true);
+        }}
+      >
+        OPEN
+      </Button>
+      <Transition
+        in={open}
+        timeout={DURATION}
+        onEntering={handleEntering}
+        onExited={handleExited}
+      >
         {() => (
           <Drawer
-            beforeEnter={beforeEnter}
             duration={DURATION}
-            open={open}
+            mount={mount}
+            standby={standby}
             width={200}
             onClose={() => {
               setOpen(false);
-              setBeforeEnter(true);
+              setStandby(true);
             }}
           >
             Drawer
