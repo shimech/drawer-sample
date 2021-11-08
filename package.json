@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css,scss}'"
   },
   "dependencies": {
     "next": "12.0.3",
@@ -18,6 +19,8 @@
     "@types/react": "17.0.34",
     "eslint": "^7.32.0",
     "eslint-config-next": "^12.0.3",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.4.1",
     "typescript": "4.4.4"
   }
 }
