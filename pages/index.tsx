@@ -15,6 +15,11 @@ const Home = () => (
             <a>Material UI</a>
           </Link>
         </li>
+        <li>
+          <Link href="/react-transition-group">
+            <a>React Transition Group</a>
+          </Link>
+        </li>
       </ul>
     </main>
   </>
