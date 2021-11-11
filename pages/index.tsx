@@ -20,6 +20,11 @@ const Home = () => (
             <a>React Transition Group</a>
           </Link>
         </li>
+        <li>
+          <Link href="/full-scratch">
+            <a>Full Scratch</a>
+          </Link>
+        </li>
       </ul>
     </main>
   </>
