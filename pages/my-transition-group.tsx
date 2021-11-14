@@ -121,7 +121,7 @@ const DrawerContent: React.FunctionComponent<DrawerContentProps> = (props) => {
   }
 };
 
-type DrawerProps = TransitionProps & DrawerContentProps & {};
+type DrawerProps = TransitionProps & DrawerContentProps;
 
 const Drawer: React.FunctionComponent<DrawerProps> = (props) => (
   <Transition duration={props.duration} open={props.open}>
