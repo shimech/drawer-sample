@@ -32,10 +32,6 @@ const Transition: React.FunctionComponent<TransitionProps> = (props) => {
     setValue((prevValue) => ({ ...prevValue, open: props.open }));
     if (props.open) {
       setValue((prevValue) => ({ ...prevValue, mount: true, willEnter: true }));
-      timeout = setTimeout(
-        () => setValue((prevValue) => ({ ...prevValue, willEnter: false })),
-        1
-      );
     } else {
       timeout = setTimeout(
         () => setValue((prevValue) => ({ ...prevValue, mount: false })),
@@ -45,6 +41,12 @@ const Transition: React.FunctionComponent<TransitionProps> = (props) => {
 
     return () => clearTimeout(timeout);
   }, [props.open, value.duration]);
+
+  React.useEffect(() => {
+    if (value.mount) {
+      setValue((prevValue) => ({ ...prevValue, willEnter: false }));
+    }
+  }, [value.mount]);
 
   React.useEffect(() => {
     setValue((prevValue) => ({ ...prevValue, duration: props.duration }));
