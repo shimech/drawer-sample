@@ -20,13 +20,18 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
     if (props.open) {
       setMount(true);
       setWillEnter(true);
-      timeout = setTimeout(() => setWillEnter(false), 1);
     } else {
       timeout = setTimeout(() => setMount(false), props.duration);
     }
 
     return () => clearTimeout(timeout);
   }, [props.open, props.duration]);
+
+  React.useEffect(() => {
+    if (mount) {
+      setWillEnter(false);
+    }
+  }, [mount]);
 
   React.useEffect(() => {
     setBody(document.body);
