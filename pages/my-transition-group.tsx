@@ -6,10 +6,13 @@ import { Button } from "@mui/material";
 type TransitionProps = {
   duration: number;
   open: boolean;
-  children: (mount: boolean, willEnter: boolean) => React.ReactElement | null;
 };
 
-const Transition = (props: TransitionProps) => {
+const Transition = (
+  props: TransitionProps & {
+    children: (mount: boolean, willEnter: boolean) => React.ReactElement | null;
+  }
+) => {
   const [mount, setMount] = React.useState(false);
   const [willEnter, setWillEnter] = React.useState(true);
 
@@ -34,7 +37,7 @@ const Transition = (props: TransitionProps) => {
   return props.children(mount, willEnter);
 };
 
-type DrawerProps = Omit<TransitionProps, "children"> & {
+type DrawerProps = TransitionProps & {
   width: number;
   onClose?: VoidFunction;
 };
