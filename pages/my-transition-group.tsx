@@ -18,15 +18,15 @@ const Transition = (
 
   React.useEffect(() => {
     let timeout: NodeJS.Timeout;
-    if (props.open) {
+    if (props.open && !mount) {
       setWillEnter(true);
       setMount(true);
-    } else {
+    } else if (!props.open && mount) {
       timeout = setTimeout(() => setMount(false), props.duration);
     }
 
     return () => clearTimeout(timeout);
-  }, [props.open, props.duration]);
+  }, [props.open, props.duration, mount]);
 
   React.useEffect(() => {
     if (mount) {
