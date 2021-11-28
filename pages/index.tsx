@@ -25,6 +25,11 @@ const Home = () => (
             <a>Full Scratch</a>
           </Link>
         </li>
+        <li>
+          <Link href="/my-transition-group">
+            <a>My Transition Group</a>
+          </Link>
+        </li>
       </ul>
     </main>
   </>
